@@ -37,10 +37,15 @@ io.on("connection", (socket) => {
             if (err) throw err
             stream.on('close', (code: number, signal: number) => {
                 console.log('Stream :: close :: code: ' + code + ', signal: ' + signal)
-                conn.end()
             }).on('data', (data: any) => {
+                if (data.toString().startsWith("power")) return
+                if (!data.toString().includes("power: server power is currently:")) return
+
+                // get on/off state
+                var power: boolean = data.toString().includes("power: server power is currently: On")
+
+                socket.emit("state", { power: power })
                 console.log('STDOUT: ' + data)
-                socket.emit("data", data.toString())
             }).stderr.on('data', (data) => {
                 console.log('STDERR: ' + data)
             });
@@ -50,6 +55,29 @@ io.on("connection", (socket) => {
         console.log('Client :: end');
     })
     .connect(config);
+    
+    socket.on("state", (data) => {
+        console.log(data)
+
+        conn.exec(`power ${data.power ? "on" : "off"}`, (err, stream) => {
+            if (err) throw err
+            stream.on('close', (code: number, signal: number) => {
+                console.log('Stream :: close :: code: ' + code + ', signal: ' + signal)
+            }).on('data', (data: any) => {
+                if (data.toString().startsWith("power")) return
+                if (!data.toString().includes("power: server power is currently:")) return
+
+                // get on/off state
+                var power: boolean = data.toString().includes("power: server power is currently: On")
+
+                socket.emit("state", { power: power })
+                console.log('STDOUT: ' + data)
+            }).stderr.on('data', (data) => {
+                console.log('STDERR: ' + data)
+            });
+        })
+
+    })
 
     socket.on("disconnect", () => {
         console.log("client disconnected")
