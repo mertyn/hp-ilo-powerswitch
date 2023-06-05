@@ -4,9 +4,14 @@
   "description": "simple power control for hp integrated lights out through a web browser",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "prestart": "tsc",
+    "start": "node ./build/index.js",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "mertyn",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.1.3"
+  }
 }
