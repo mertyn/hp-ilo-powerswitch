@@ -1,12 +1,6 @@
-// function $(selector) {
-//     return document.querySelector(selector)
-// }
-
-// const buttonSwitch = $("#switch")
-
-
-// buttonSwitch.addEventListener("click", () => {
-
-// })
+function $(selector) { return document.querySelector(selector) }
 
 var socket = io()
+socket.on("data", (data) => {
+    console.log(data)
+})

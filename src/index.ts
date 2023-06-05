@@ -2,11 +2,13 @@ import "dotenv/config"
 import express from "express"
 import http from "http"
 import { Server } from "socket.io"
-import { Client } from "ssh2"
+import { Client, ConnectConfig } from "ssh2"
 
-const config = {
+
+
+const config: ConnectConfig = {
     host: process.env.HOST,
-    port: process.env.PORT,
+    port: parseInt(process.env.PORT || "22"),
     username: process.env.USER,
     password: process.env.PASSWORD,
     algorithms: {
@@ -15,15 +17,6 @@ const config = {
     }
 }
 
-const conn = new Client();
-
-// conn.on("ready", () => {
-//     console.log('Client :: ready');
-// })
-// .on("end", () => {
-//     console.log('Client :: end');  
-// })
-// .connect(config);
 
 
 const port = process.env.WEBPORT || 5000;
@@ -34,9 +27,33 @@ const io = new Server(server)
 app.use(express.static("public"))
 
 io.on("connection", (socket) => {
-    console.log("a user connected")
+    console.log("client connected")
+
+    const conn = new Client();
+    conn.on("ready", () => {
+        console.log('Client :: ready');
+
+        conn.exec("power", (err, stream) => {
+            if (err) throw err
+            stream.on('close', (code: number, signal: number) => {
+                console.log('Stream :: close :: code: ' + code + ', signal: ' + signal)
+                conn.end()
+            }).on('data', (data: any) => {
+                console.log('STDOUT: ' + data)
+                socket.emit("data", data.toString())
+            }).stderr.on('data', (data) => {
+                console.log('STDERR: ' + data)
+            });
+        })
+    })
+    .on("end", () => {
+        console.log('Client :: end');
+    })
+    .connect(config);
+
     socket.on("disconnect", () => {
-        console.log("user disconnected")
+        console.log("client disconnected")
+        conn.end()
     })
 })
 
