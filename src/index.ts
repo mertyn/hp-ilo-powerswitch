@@ -1,7 +1,8 @@
 import "dotenv/config"
-import express, { Application } from "express"
-
-const { Client } = require("ssh2")
+import express from "express"
+import http from "http"
+import { Server } from "socket.io"
+import { Client } from "ssh2"
 
 const config = {
     host: process.env.HOST,
@@ -25,10 +26,20 @@ const conn = new Client();
 // .connect(config);
 
 
-const app = express()
 const port = process.env.WEBPORT || 5000;
+const app = express()
+const server = http.createServer(app)
+const io = new Server(server)
 
 app.use(express.static("public"))
-app.listen(port, () => {
+
+io.on("connection", (socket) => {
+    console.log("a user connected")
+    socket.on("disconnect", () => {
+        console.log("user disconnected")
+    })
+})
+
+server.listen(port, () => {
     return console.log(`Webserver is listening at http://localhost:${port}`);
 })
