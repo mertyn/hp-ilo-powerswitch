@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc --project src/ && webpack --config webpack.config.js",
+    "build-server": "tsc --project src/",
     "start": "node build/index.js",
-    "dev": "npm run build && npm run start",
+    "dev": "npm run build-server && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "mertyn",
