@@ -3,6 +3,7 @@ import express from "express"
 import https from "https"
 import http from "http"
 import { Server } from "socket.io"
+import { PowerClient } from "./power-client"
 
 
 const port = process.env.WEBPORT || 5000;
@@ -26,27 +27,9 @@ io.on("connection", (socket) => {
 // })
 
 
-const iloIP = process.env.HOST;
-const username = process.env.USER;
-const password = process.env.PASS;
+const client = new PowerClient(process.env.HOST || "", process.env.USER || "", process.env.PASS || "")
 
-const options = {
-    hostname: iloIP,
-    path: "/redfish/v1/Systems/1/",
-    method: "GET",
-    auth: `${username}:${password}`,
-    rejectUnauthorized: false
-}
-
-const req = https.request(options, (res) => {
-    console.log(`statusCode: ${res.statusCode}`)
-
-    res.on("data", (data) => {
-        console.log(data.toString())
-    })
-
-}).setTimeout(100000).on("error", (error) => {
-    console.error('Error:', error)
+client.getPowerState((state: boolean) => {
+    console.log(state)
 })
-
-req.end()
+// client.powerOff()
