@@ -13,6 +13,7 @@ export class PowerClient {
         this._password = password;
     }
 
+
     public getPowerState(callback: Function): void {
         const options = {
             hostname: this._iloIP,
@@ -36,7 +37,16 @@ export class PowerClient {
         req.end()
     }
 
+
     public powerOn(): void {
+        this.postResetAction("On")
+    }
+
+    public powerOff(): void {
+        this.postResetAction("PushPowerButton")
+    }
+
+    private postResetAction(resetType: string): void {
         const options = {
             hostname: this._iloIP,
             path: "/redfish/v1/Systems/1/Actions/ComputerSystem.Reset/",
@@ -47,55 +57,23 @@ export class PowerClient {
                 "Content-Type": "application/json",
             },
         }
-
+    
         const payload = {
             Action: 'Reset',
             ResetType: 'On'
         };
-
+    
         const req = https.request(options, (res) => {
             console.log(`statusCode: ${res.statusCode}`)
-
+    
             res.on("data", (data) => {
                 console.log(data.toString())
             })
-
+    
         }).setTimeout(100000).on("error", (error) => {
             console.error('Error:', error)
         })
-
-        req.write(JSON.stringify(payload))
-        req.end()
-    }
-
-    public powerOff(): void {
-        const options = {
-            hostname: this._iloIP,
-            path: "/redfish/v1/Systems/1/Actions/ComputerSystem.Reset/",
-            method: "POST",
-            auth: `${this._username}:${this._password}`,
-            rejectUnauthorized: false,
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }
-
-        const payload = {
-            Action: 'Reset',
-            ResetType: 'ForceOff'
-        };
-
-        const req = https.request(options, (res) => {
-            console.log(`statusCode: ${res.statusCode}`)
-
-            res.on("data", (data) => {
-                console.log(data.toString())
-            })
-
-        }).setTimeout(100000).on("error", (error) => {
-            console.error('Error:', error)
-        })
-
+    
         req.write(JSON.stringify(payload))
         req.end()
     }
