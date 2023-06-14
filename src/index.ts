@@ -1,6 +1,5 @@
 import "dotenv/config"
 import express from "express"
-import https from "https"
 import http from "http"
 import { Server } from "socket.io"
 import { PowerClient } from "./power-client"
