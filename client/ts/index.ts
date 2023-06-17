@@ -1,9 +1,17 @@
-import { io } from "socket.io-client"
+fetch(`http://${location.host}/api/state`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+    })
 
-var socket = io()
-
-socket.on('connect', () => {
-    console.log('connected')
+fetch(`http://${location.host}/api/action`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ action: "On" })
 })
-
-console.log("Hello World!")
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+    })

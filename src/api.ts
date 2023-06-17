@@ -1,5 +1,6 @@
 import express from "express";
 import { PowerClient, PowerClientOptions } from "./power-client";
+import bodyParser from "body-parser";
 
 
 export class PowerAPI {
@@ -12,13 +13,15 @@ export class PowerAPI {
     }
 
     private addRoutes(app: express.Application): void {
+        app.use(bodyParser.json())
         app.get("/api/", this.api)
         app.get("/api/state", (req: express.Request, res: express.Response) => this.state(req, res))
+        app.post("/api/action", (req: express.Request, res: express.Response) => this.action(req, res))
     }
 
     private api(req: express.Request, res: express.Response): void {
         console.log("api: got request ", req.path)
-        res.json({ messag: "hello, this is api" })
+        res.json({ message: "hello, this is api" })
     }
 
     private state(req: express.Request, res: express.Response): void {
@@ -26,6 +29,11 @@ export class PowerAPI {
         this.client.getPowerState((powerOn: boolean) => {
             res.json({ powerOn: powerOn })
         })
+    }
+
+    private action(req: express.Request, res: express.Response): void {
+        console.log("api: got post request", req.body)
+        res.json({ status: "okay" })
     }
 
 }
