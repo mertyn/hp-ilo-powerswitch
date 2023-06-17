@@ -1,34 +1,42 @@
 import https from "https"
 
 
+export type PowerClientOptions = {
+    host: string,
+    username: string,
+    password: string
+}
+
 export class PowerClient {
 
-    private readonly _iloIP: string;
-    private readonly _username: string;
-    private readonly _password: string;
+    private readonly iloIP: string;
+    private readonly username: string;
+    private readonly password: string;
 
-    constructor(iloIP: string, username: string, password: string) {
-        this._iloIP = iloIP;
-        this._username = username;
-        this._password = password;
+    constructor(options: PowerClientOptions) {
+        this.iloIP = options.host;
+        this.username = options.username;
+        this.password = options.password;
     }
 
 
     public getPowerState(callback: Function): void {
         const options = {
-            hostname: this._iloIP,
+            hostname: this.iloIP,
             path: "/redfish/v1/Systems/1/",
             method: "GET",
-            auth: `${this._username}:${this._password}`,
+            auth: `${this.username}:${this.password}`,
             rejectUnauthorized: false,
             headers: { "Content-Type": "application/json" },
         }
 
         const req = https.request(options, (res) => {
-            console.log(`statusCode: ${res.statusCode}`)
+            // console.log(`statusCode: ${res.statusCode}`)
+
             res.on("data", (data) => {
-                console.log(data.toString())
                 JSON.parse(data.toString()).PowerState === "On" ? callback(true) : callback(false)
+                
+                // console.log(data.toString())
             })
         }).setTimeout(100000).on("error", (error) => {
             console.error('Error:', error)
@@ -48,10 +56,10 @@ export class PowerClient {
 
     private postResetAction(resetType: string): void {
         const options = {
-            hostname: this._iloIP,
+            hostname: this.iloIP,
             path: "/redfish/v1/Systems/1/Actions/ComputerSystem.Reset/",
             method: "POST",
-            auth: `${this._username}:${this._password}`,
+            auth: `${this.username}:${this.password}`,
             rejectUnauthorized: false,
             headers: {
                 "Content-Type": "application/json",

@@ -1,34 +1,22 @@
 import "dotenv/config"
 import express from "express"
-import http from "http"
-import { Server } from "socket.io"
-import { PowerClient } from "./power-client"
+import { PowerClientOptions } from "./power-client"
+import { PowerAPI } from "./api"
 
 
 const port = process.env.WEBPORT || 5000;
 const app = express()
-const server = http.createServer(app)
-const io = new Server(server)
-
 
 app.use(express.static("public"))
 
-io.on("connection", (socket) => {
-    console.log("client connected")
+var options: PowerClientOptions = {
+    host: process.env.HOST || "",
+    username: process.env.USER || "",
+    password: process.env.PASS || ""
+}
 
-    socket.on("disconnect", () => {
-        console.log("client disconnected")
-    })
+new PowerAPI(app, options)
+
+app.listen(port, () => {
+    return console.log(`Webserver is listening at http://localhost:${port}`);
 })
-
-// server.listen(port, () => {
-//     return console.log(`Webserver is listening at http://localhost:${port}`);
-// })
-
-
-const client = new PowerClient(process.env.HOST || "", process.env.USER || "", process.env.PASS || "")
-
-client.getPowerState((state: boolean) => {
-    console.log(state)
-})
-// client.powerOff()
