@@ -33,7 +33,7 @@ export class PowerClient {
         }
 
         const req = https.request(options, (res) => {
-            console.log("client: statusCode =", res.statusCode)
+            console.log("client: get statusCode =", res.statusCode)
 
             res.on("data", (data) => {
                 var obj = JSON.parse(data.toString())
@@ -60,7 +60,7 @@ export class PowerClient {
         this.postResetAction("PushPowerButton")
     }
 
-    private postResetAction(resetType: string): void {
+    public postResetAction(resetType: string, callback?: Function): void {
         console.log("client: posting action")
 
         const options = {
@@ -80,10 +80,14 @@ export class PowerClient {
         };
     
         const req = https.request(options, (res) => {
-            console.log(`statusCode: ${res.statusCode}`)
+            console.log("client: post statusCode =", res.statusCode)
     
             res.on("data", (data) => {
-                console.log(data.toString())
+                var obj = JSON.parse(data.toString())
+
+                console.log("client: got data")
+                // console.log(data.toString())
+                console.log(JSON.stringify(obj, null, 2))
             })
     
         }).setTimeout(100000).on("error", (error) => {
