@@ -13,14 +13,16 @@ export class PowerAPI {
 
     private addRoutes(app: express.Application): void {
         app.get("/api/", this.api)
-        app.get("/api/state", (_: any, res: express.Response) => this.state(res))
+        app.get("/api/state", (req: express.Request, res: express.Response) => this.state(req, res))
     }
 
-    private api(_: any, res: express.Response): void {
+    private api(req: express.Request, res: express.Response): void {
+        console.log("api: got request ", req.path)
         res.json({ messag: "hello, this is api" })
     }
 
-    private state(res: express.Response): void {
+    private state(req: express.Request, res: express.Response): void {
+        console.log("api: got request ", req.path)
         this.client.getPowerState((powerOn: boolean) => {
             res.json({ powerOn: powerOn })
         })

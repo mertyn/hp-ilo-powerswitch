@@ -21,6 +21,8 @@ export class PowerClient {
 
 
     public getPowerState(callback: Function): void {
+        console.log("client: requesting powerstate")
+
         const options = {
             hostname: this.iloIP,
             path: "/redfish/v1/Systems/1/",
@@ -31,15 +33,19 @@ export class PowerClient {
         }
 
         const req = https.request(options, (res) => {
-            // console.log(`statusCode: ${res.statusCode}`)
+            console.log("client: statusCode =", res.statusCode)
 
             res.on("data", (data) => {
-                JSON.parse(data.toString()).PowerState === "On" ? callback(true) : callback(false)
-                
+                var obj = JSON.parse(data.toString())
+                obj.PowerState === "On" ? callback(true) : callback(false)
+
+                console.log("client: got data")
                 // console.log(data.toString())
+                console.log(JSON.stringify(obj, null, 2))
+                console.log("client: powerOn =", obj.PowerState === "On")
             })
         }).setTimeout(100000).on("error", (error) => {
-            console.error('Error:', error)
+            console.error("client error: ", error)
         })
 
         req.end()
@@ -55,6 +61,8 @@ export class PowerClient {
     }
 
     private postResetAction(resetType: string): void {
+        console.log("client: posting action")
+
         const options = {
             hostname: this.iloIP,
             path: "/redfish/v1/Systems/1/Actions/ComputerSystem.Reset/",
