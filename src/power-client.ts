@@ -75,8 +75,8 @@ export class PowerClient {
         }
     
         const payload = {
-            Action: 'Reset',
-            ResetType: 'On'
+            Action: "Reset",
+            ResetType: resetType
         };
     
         const req = https.request(options, (res) => {
@@ -87,7 +87,7 @@ export class PowerClient {
             })
     
         }).setTimeout(100000).on("error", (error) => {
-            console.error('Error:', error)
+            console.error("client error:", error)
         })
     
         req.write(JSON.stringify(payload))
