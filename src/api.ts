@@ -33,8 +33,10 @@ export class PowerAPI {
 
     private action(req: express.Request, res: express.Response): void {
         console.log("api: got action request", req.body.action)
-        // this.client.postResetAction(req.body.action)
-        res.json({ status: "okay" })
+        this.client.postResetAction(req.body.action, (powerOn: boolean) => {
+            console.log("api: responding with powerOn =", powerOn)
+            res.json({ powerOn: powerOn })
+        })
     }
 
 }

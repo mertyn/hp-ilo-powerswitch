@@ -37,12 +37,13 @@ export class PowerClient {
 
             res.on("data", (data) => {
                 var obj = JSON.parse(data.toString())
-                obj.PowerState === "On" ? callback(true) : callback(false)
-
+                
                 console.log("client: got data")
                 // console.log(data.toString())
                 console.log(JSON.stringify(obj, null, 2))
                 console.log("client: powerOn =", obj.PowerState === "On")
+
+                obj.PowerState === "On" ? callback(true) : callback(false)
             })
         }).setTimeout(100000).on("error", (error) => {
             console.error("client error: ", error)
@@ -88,6 +89,10 @@ export class PowerClient {
                 console.log("client: got data")
                 // console.log(data.toString())
                 console.log(JSON.stringify(obj, null, 2))
+                console.log("client: powerOn =", obj.PowerState === "On")
+                
+                if (callback)
+                    obj.PowerState === "On" ? callback(true) : callback(false)
             })
     
         }).setTimeout(100000).on("error", (error) => {
