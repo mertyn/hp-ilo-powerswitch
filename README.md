@@ -3,8 +3,8 @@ simple power control for hp integrated lights out through a web browser
 
 ## Todo
 client:
-- check status when pressing button
-- after pressing button, check status with a delay
+- ~~check status when pressing button~~
+- ~~after pressing button, check status with a delay~~
 
 server:
 - api
