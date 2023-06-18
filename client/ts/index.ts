@@ -4,6 +4,9 @@ const updateTimeoutOff = 10000
 
 var $ = (selector: string) => document.querySelector(selector)
 
+var hostName = $("#host--name") as HTMLSpanElement
+var hostModel = $("#host--model") as HTMLSpanElement
+
 var powerSwitch = $("#power--switch") as HTMLButtonElement
 var forceRestart = $("#force--restart") as HTMLButtonElement
 var forceOff = $("#force--off") as HTMLButtonElement
@@ -43,6 +46,9 @@ function updatePowerSwitch(data: any) {
 getStatus((data: any) => {
     powerButtonEnabled = true
     updatePowerSwitch(data)
+
+    hostName.innerText = data.hostname
+    hostModel.innerText = data.hostmodel
 })
 
 function updateStatusDelayed(delay: number = 1000) {

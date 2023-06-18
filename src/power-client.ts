@@ -43,7 +43,7 @@ export class PowerClient {
                 console.log(JSON.stringify(obj, null, 2))
                 console.log("client: powerOn =", obj.PowerState === "On")
 
-                obj.PowerState === "On" ? callback(true) : callback(false)
+                callback ? callback(obj) : null
             })
         }).setTimeout(100000).on("error", (error) => {
             console.error("client error: ", error)
@@ -91,8 +91,7 @@ export class PowerClient {
                 console.log(JSON.stringify(obj, null, 2))
                 console.log("client: powerOn =", obj.PowerState === "On")
                 
-                if (callback)
-                    obj.PowerState === "On" ? callback(true) : callback(false)
+                callback ? callback(obj) : null
             })
     
         }).setTimeout(100000).on("error", (error) => {

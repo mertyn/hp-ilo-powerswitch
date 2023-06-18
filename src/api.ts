@@ -26,16 +26,21 @@ export class PowerAPI {
 
     private state(req: express.Request, res: express.Response): void {
         console.log("api: got request ", req.path)
-        this.client.getPowerState((powerOn: boolean) => {
-            res.json({ powerOn: powerOn })
+        this.client.getPowerState((data: any) => {
+            console.log("api: got data", data.PowerState)
+            res.json({
+                powerOn: data.PowerState === "On",
+                hostmodel: data.Model,
+                hostname: data.HostName,
+            })
         })
     }
 
     private action(req: express.Request, res: express.Response): void {
         console.log("api: got action request", req.body.action)
-        this.client.postResetAction(req.body.action, (powerOn: boolean) => {
-            console.log("api: responding with powerOn =", powerOn)
-            res.json({ powerOn: powerOn })
+        this.client.postResetAction(req.body.action, (data: any) => {
+            console.log("api: responding with powerOn =", data.PowerState === "On")
+            res.json({ powerOn: data.PowerState === "On" })
         })
     }
 
