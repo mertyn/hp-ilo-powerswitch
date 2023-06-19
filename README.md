@@ -18,6 +18,7 @@ ILOPASS="<ilo-password>"
 
 client:
 - error handling
+- mobile login
 - ~~simplify everything~~
 - ~~password protection~~
 
