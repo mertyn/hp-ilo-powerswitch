@@ -29,9 +29,9 @@ export class PowerAPI {
         this.client.getPowerState((data: any) => {
             console.log("api: got data", data.PowerState)
             res.json({
-                powerOn: data.PowerState === "On",
-                hostmodel: data.Model,
-                hostname: data.HostName,
+                powerState: data.PowerState,
+                model: data.Model,
+                name: data.HostName,
             })
         })
     }

@@ -39,8 +39,8 @@ export class PowerClient {
                 var obj = JSON.parse(data.toString())
                 
                 console.log("client: got data")
-                // console.log(data.toString())
-                console.log(JSON.stringify(obj, null, 2))
+                console.log(data.toString())
+                // console.log(JSON.stringify(obj, null, 2))
                 console.log("client: powerOn =", obj.PowerState === "On")
 
                 callback ? callback(obj) : null
@@ -87,8 +87,8 @@ export class PowerClient {
                 var obj = JSON.parse(data.toString())
 
                 console.log("client: got data")
-                // console.log(data.toString())
-                console.log(JSON.stringify(obj, null, 2))
+                console.log(data.toString())
+                // console.log(JSON.stringify(obj, null, 2))
                 console.log("client: powerOn =", obj.PowerState === "On")
                 
                 callback ? callback(obj) : null
