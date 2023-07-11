@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  hp-powerswitch:
+    container_name: hp-ilo-powerswitch
+    image: hp-ilo-powerswitch
+    
+    ports:
+      - 5000:5000
+    environment:
+      - USER=<username>
+      - PASS=<password>
+      - ILOHOST=<host>
+      - ILOUSER=<user>
+      - ILOPASS=<password>
