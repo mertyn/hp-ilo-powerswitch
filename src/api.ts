@@ -25,10 +25,10 @@ export class PowerAPI {
     }
 
     private state(req: express.Request, res: express.Response): void {
-        console.log("api: got request ", req.path)
+        // console.log("api: got request ", req.path)
 
         function callback(data: any) {
-            console.log("api: got data", data.PowerState)
+            // console.log("api: got data", data.PowerState)
             res.json({
                 powerState: data.PowerState,
                 model: data.Model,
@@ -37,7 +37,7 @@ export class PowerAPI {
         }
 
         function error(data: any) {
-            console.log("api: got error", data)
+            // console.log("api: got error", data)
             res.json({ error: data })
         }
 
@@ -52,7 +52,7 @@ export class PowerAPI {
             res.json({ powerOn: data.PowerState === "On" })
         },
         (error: any) => {   
-            console.log("api: got error", error)
+            // console.log("api: got error", error)
             res.json({ error: error })
         })
     }
