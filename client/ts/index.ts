@@ -7,6 +7,7 @@ var $$ = (selector: string) => document.querySelectorAll(selector)
 var hostName = $("#host--name") as HTMLSpanElement
 var hostModel = $("#host--model") as HTMLSpanElement
 var powerState = $("#power--state") as HTMLSpanElement
+var error = $("#error") as HTMLSpanElement
 
 var powerOn = $("#power--on") as HTMLButtonElement
 var powerOff = $("#power--off") as HTMLButtonElement
@@ -18,8 +19,13 @@ function updateStatus() {
     fetch(`http://${location.host}/api/state`)
         .then(response => response.json())
         .then(data => {
-            hostName.innerText = data.name
-            hostModel.innerText = data.model
+            if (data.error) {
+                console.error("error getting state", data.error)
+                error.innerText = `Error:\n${JSON.stringify(data.error)}`
+            }
+
+            hostName.innerText = data.name || "Unknown"
+            hostModel.innerText = data.model || "Unknown"
 
             powerState.innerText = `Server is ${data.powerState}`
             if (data.powerState === "On")
@@ -38,7 +44,7 @@ function updateStatus() {
 
 updateStatus()
 
-function sendAction(action: string, callback?: Function) {
+function sendAction(action: string, errorCallback?: Function, callback?: Function) {
     console.log("sending action", action)
 
     fetch(`http://${location.host}/api/action`, {
@@ -47,7 +53,14 @@ function sendAction(action: string, callback?: Function) {
         body: JSON.stringify({ action: action })
     })
         .then(response => response.json())
-        .then(data => callback ? callback(data) : null)
+        .then(data => {
+            if (data.error) {
+                console.error("error sending action", data.error)
+                errorCallback ? errorCallback(data.error) : null
+            }
+            else
+                callback ? callback(data) : null
+        })
 }
 
 
@@ -57,12 +70,12 @@ $$(".power--action").forEach((button: any) => {
     button.addEventListener("click", () => {
         if (button.dataset.confirm == "false"){
             console.log("sending action", button.dataset.action)
-            sendAction(button.dataset.action)
+            sendAction(button.dataset.action, (error: string) => window.alert(`Error sending action: \n ${JSON.stringify(error)}`))
         }
         else{
             if (confirm(`Are you sure you want to send ${button.innerText}?`)){
                 console.log("sending action", button.dataset.action)
-                sendAction(button.dataset.action)
+                sendAction(button.dataset.action, (error: string) => window.alert(`Error sending action: \n ${JSON.stringify(error)}`))
             }
         }
     })

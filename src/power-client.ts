@@ -20,7 +20,7 @@ export class PowerClient {
     }
 
 
-    public getPowerState(callback: Function): void {
+    public getPowerState(callback: Function, errorCallback?: Function): void {
         console.log("client: requesting powerstate")
 
         const options = {
@@ -47,6 +47,7 @@ export class PowerClient {
             })
         }).setTimeout(100000).on("error", (error) => {
             console.error("client error: ", error)
+            errorCallback ? errorCallback(error) : null
         })
 
         req.end()
@@ -61,7 +62,7 @@ export class PowerClient {
         this.postResetAction("PushPowerButton")
     }
 
-    public postResetAction(resetType: string, callback?: Function): void {
+    public postResetAction(resetType: string, callback?: Function, errorCallback?: Function): void {
         console.log("client: posting action")
 
         const options = {
@@ -96,6 +97,7 @@ export class PowerClient {
     
         }).setTimeout(100000).on("error", (error) => {
             console.error("client error:", error)
+            errorCallback ? errorCallback(error) : null
         })
     
         req.write(JSON.stringify(payload))
