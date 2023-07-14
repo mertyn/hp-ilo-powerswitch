@@ -5,16 +5,33 @@ import { PowerClientOptions } from "./power-client"
 import { PowerAPI } from "./api"
 
 
-const port = process.env.PORT || 5000;
+function env(key: string, defaultValue: any = ""): string {
+    return process.env[key] || defaultValue
+}
+
+
+// log environment options
+console.log(`
+environment configuration:
+PORT=${env("PORT")},
+USER=${env("USER")},
+PASS=${env("PASS")},
+ILOHOST=${env("ILOHOST")},
+ILOUSER=${env("ILOUSER")},
+ILOPASS=${env("ILOPASS")}
+`)
+
+
+const port = env("PORT", 5000);
 const app = express()
 
-app.use(auth(process.env.USER || "", process.env.PASS || ""))
+// app.use(auth(env("USER"), env("PASS")))
 app.use(express.static("public"))
 
 var options: PowerClientOptions = {
-    host: process.env.ILOHOST || "",
-    username: process.env.ILOUSER || "",
-    password: process.env.ILOPASS || ""
+    host: env("ILOHOST"),
+    username: env("ILOUSER"),
+    password: env("ILOPASS")
 }
 
 new PowerAPI(app, options)
