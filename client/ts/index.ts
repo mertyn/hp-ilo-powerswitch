@@ -23,6 +23,8 @@ function updateStatus() {
                 console.error("error getting state", data.error)
                 error.innerText = `Error:\n${JSON.stringify(data.error)}`
             }
+            else
+                error.innerText = ""
 
             hostName.innerText = data.name || "Unknown"
             hostModel.innerText = data.model || "Unknown"
