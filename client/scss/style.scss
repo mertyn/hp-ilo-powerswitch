@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@300;400&display=swap');
+
+$font: "Roboto Mono", monospace;
+$background: #212121;
+$primary: #fff;
+$accent: #2196f3;
+
 html, body {
     margin: 0;
     padding: 0;
@@ -21,6 +28,8 @@ body {
 
     background: #212121;
     color: #fff;
+
+    font-family: $font;
 }
 
 main {
@@ -67,6 +76,8 @@ button {
     background: grey;
     font-size: 1.1em;
     cursor: pointer;
+
+    font-family: $font;
 }
 
 button:active {
