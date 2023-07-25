@@ -8,6 +8,7 @@
     "build-server": "tsc --project src/",
     "start": "node build/index.js",
     "dev": "npm run build && npm run start",
+    "sass": "npx sass --watch client/scss/style.scss client/style.css",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "mertyn",
