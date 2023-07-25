@@ -14,15 +14,21 @@
     <h3 id="power--state">Loading...</h3>
     <h4 id="error"></h4> -->
 
-    <h1 id="host--name">pineapple</h1>
-    <h2 id="host--model">HP Microserver Gen8</h2>
-    <h3 id="power--state">Powered off</h3>
-    <h4 id="error"></h4>
+    <header>
+        <h1 id="host--name">pineapple</h1>
+        <h2 id="host--model">HP Microserver Gen8</h2>
+        <h3 id="power--state">Powered off</h3>
+        <h4 id="error"></h4>
+    </header>
 
-    <button class="power--action" id="power--on" data-action="On" data-confirm="false">Turn on</button>
-    <button class="power--action" id="power--off" data-action="PushPowerButton">Turn off</button>
-    <button class="power--action" id="force--off" data-action="ForceOff">Force off</button>
-    <button class="power--action" id="force--restart" data-action="ForceRestart">Reset</button>
+    <main>
+        <ul class="buttons">
+            <li><button class="power--action primary" id="power--on" data-action="On" data-confirm="false">Turn on</button></li>
+            <li><button class="power--action" id="power--off" data-action="PushPowerButton">Turn off</button></li>
+            <li><button class="power--action" id="force--off" data-action="ForceOff">Force off</button></li>
+            <li><button class="power--action" id="force--restart" data-action="ForceRestart">Reset</button></li>
+        </ul>
+    </main>
 
     <!-- <script src="bundle.js"></script> -->
 </body>
