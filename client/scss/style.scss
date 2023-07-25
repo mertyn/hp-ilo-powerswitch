@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&family=Roboto:wght@300;400&display=swap');
 
 $font: "Roboto Mono", monospace;
-$background: #212121;
-$primary: teal;
-$secondary: #fff;
+$background: #012922;
+$primary: #00BFA5;
+$secondary: #004d40;
 $foreground: #fff;
 $foregroundSecondary: #aaa;
-$on: green;
-$off: red;
+$on: #1DE9B6;
+$off: #E53935;
 
 html, body {
     margin: 0;
@@ -25,16 +25,20 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    gap: 5em;
+    gap: 3em;
 
     width: 100%;
     height: 100%;
-    max-width: 300px;
+    max-width: 22em;
 
-    background: #212121;
+    background: $background;
     color: #fff;
 
     font-family: $font;
+}
+
+header {
+    margin: 2em 0;
 }
 
 main {
@@ -97,6 +101,7 @@ button {
     cursor: pointer;
 
     font-family: $font;
+    color: $foreground;
 }
 
 button:active {
