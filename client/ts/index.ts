@@ -70,15 +70,9 @@ $$(".power--action").forEach((button: any) => {
     button = button as HTMLButtonElement
 
     button.addEventListener("click", () => {
-        if (button.dataset.confirm == "false"){
+        if (confirm(`Are you sure you want to send ${button.innerText}?`)){
             console.log("sending action", button.dataset.action)
             sendAction(button.dataset.action, (error: string) => window.alert(`Error sending action: \n ${JSON.stringify(error)}`))
-        }
-        else{
-            if (confirm(`Are you sure you want to send ${button.innerText}?`)){
-                console.log("sending action", button.dataset.action)
-                sendAction(button.dataset.action, (error: string) => window.alert(`Error sending action: \n ${JSON.stringify(error)}`))
-            }
         }
     })
 })
