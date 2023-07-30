@@ -18,7 +18,8 @@ USER=${env("USER")},
 PASS=${env("PASS")},
 ILOHOST=${env("ILOHOST")},
 ILOUSER=${env("ILOUSER")},
-ILOPASS=${env("ILOPASS")}
+ILOPASS=${env("ILOPASS")},
+SERVERTOKEN=${env("SERVERTOKEN")}
 `)
 
 

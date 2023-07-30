@@ -17,6 +17,7 @@ export class PowerAPI {
         app.get("/api/", this.api)
         app.get("/api/state", (req: express.Request, res: express.Response) => this.state(req, res))
         app.post("/api/action", (req: express.Request, res: express.Response) => this.action(req, res))
+        app.post("/api/notification", (req: express.Request, res: express.Response) => this.notification(req, res));
     }
 
     private api(req: express.Request, res: express.Response): void {
@@ -55,6 +56,14 @@ export class PowerAPI {
             // console.log("api: got error", error)
             res.json({ error: error })
         })
+    }
+
+    private notification(req: express.Request, res: express.Response): void {
+        console.log("api: got notification request", req.body.token)
+
+        var tokenValid: boolean = process.env.SERVERTOKEN == req.body.token;
+
+        res.json({ tokenValid: tokenValid })
     }
 
 }
