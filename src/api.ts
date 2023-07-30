@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 export class PowerAPI {
 
     private client: PowerClient
+    private readyEventListeners: Function[] = []
 
     constructor(app: express.Application, options: PowerClientOptions) {
         this.client = new PowerClient(options)
@@ -65,6 +66,13 @@ export class PowerAPI {
         
         res.status(tokenValid ? 200 : 401)
         res.json({ tokenValid: tokenValid })
+
+        if (tokenValid)
+            this.readyEventListeners.forEach((callback) => callback())
+    }
+
+    public onReady(callback: Function): void {
+        this.readyEventListeners.push(callback)
     }
 
 }

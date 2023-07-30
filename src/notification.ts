@@ -11,8 +11,13 @@ export class NotificationServer {
         this.io = new Server(server)
 
         this.io.on("connection", (socket) => {
-            console.log("client connected")
-            socket.on("disconnect", () => console.log("client disconnected") )
+            console.log("notify: client connected")
+            socket.on("disconnect", () => console.log("notify: client disconnected"))
+        })
+
+        api.onReady(() => {
+            console.log("notify: server is ready")
+            this.io.emit("ready")
         })
     }
 
