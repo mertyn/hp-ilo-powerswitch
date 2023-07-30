@@ -59,10 +59,11 @@ export class PowerAPI {
     }
 
     private notification(req: express.Request, res: express.Response): void {
-        console.log("api: got notification request", req.body.token)
-
         var tokenValid: boolean = process.env.SERVERTOKEN == req.body.token;
-
+        
+        console.log("api: got notification request", req.body.token, "token valid ", tokenValid)
+        
+        res.status(tokenValid ? 200 : 401)
         res.json({ tokenValid: tokenValid })
     }
 
