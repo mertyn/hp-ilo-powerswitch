@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 export class PowerAPI {
 
     private client: PowerClient
+    private readyEventListeners: Function[] = []
 
     constructor(app: express.Application, options: PowerClientOptions) {
         this.client = new PowerClient(options)
@@ -17,6 +18,7 @@ export class PowerAPI {
         app.get("/api/", this.api)
         app.get("/api/state", (req: express.Request, res: express.Response) => this.state(req, res))
         app.post("/api/action", (req: express.Request, res: express.Response) => this.action(req, res))
+        app.post("/api/notification", (req: express.Request, res: express.Response) => this.notification(req, res));
     }
 
     private api(req: express.Request, res: express.Response): void {
@@ -55,6 +57,22 @@ export class PowerAPI {
             // console.log("api: got error", error)
             res.json({ error: error })
         })
+    }
+
+    private notification(req: express.Request, res: express.Response): void {
+        var tokenValid: boolean = process.env.SERVERTOKEN == req.body.token;
+        
+        console.log("api: got notification request", req.body.token, "token valid ", tokenValid)
+        
+        res.status(tokenValid ? 200 : 401)
+        res.json({ tokenValid: tokenValid })
+
+        if (tokenValid)
+            this.readyEventListeners.forEach((callback) => callback())
+    }
+
+    public onReady(callback: Function): void {
+        this.readyEventListeners.push(callback)
     }
 
 }

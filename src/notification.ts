@@ -1,0 +1,24 @@
+import http from "http";
+import { PowerAPI } from "./api";
+import { Server } from "socket.io";
+
+
+export class NotificationServer {
+
+    private io: Server
+
+    constructor(server: http.Server, api: PowerAPI) {
+        this.io = new Server(server)
+
+        this.io.on("connection", (socket) => {
+            console.log("notify: client connected")
+            socket.on("disconnect", () => console.log("notify: client disconnected"))
+        })
+
+        api.onReady(() => {
+            console.log("notify: server is ready")
+            this.io.emit("ready")
+        })
+    }
+
+}
