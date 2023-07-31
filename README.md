@@ -1,6 +1,8 @@
 # hp-ilo-powerswitch
 simple power control for hp integrated lights out through a web browser
 
+![screenshot of application](header.png)
+
 ## about
 hp proliant servers come with a management computer, hp ilo (integrated lights out) to control power of the server and manage the configuration of other aspects of the machine remotely. sadly the stock ilo webpage is kind of annoying to use when you only want quickly turn the machine on and off, especially when using a mobile device. luckily hp provides a restful api for controlling the ilo using a custom application. that is why i decided to create a small easy to use webapp i can host myself for controling the power of my server remotely.
 
