@@ -14,7 +14,7 @@ var error = $("#error") as HTMLSpanElement
 
 
 function updateStatus() {
-    fetch(`http://${location.host}/api/state`)
+    fetch(`${location.protocol}//${location.host}/api/state`)
         .then(response => response.json())
         .then(data => {
             if (data.error) {
@@ -47,7 +47,7 @@ updateStatus()
 function sendAction(action: string, errorCallback?: Function, callback?: Function) {
     console.log("sending action", action)
 
-    fetch(`http://${location.host}/api/action`, {
+    fetch(`${location.protocol}//${location.host}/api/action`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: action })

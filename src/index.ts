@@ -1,6 +1,8 @@
 import "dotenv/config"
 import { Log } from "./log"
 import http from "http"
+import https from "https"
+import fs from "fs"
 import express from "express"
 import { Server } from "socket.io"
 import { auth } from "./auth"
@@ -26,7 +28,7 @@ ILOPASS=${env("ILOPASS")},
 SERVERTOKEN=${env("SERVERTOKEN")}
 `)
 
-var options: PowerClientOptions = {
+var clientOptions: PowerClientOptions = {
     host: env("ILOHOST"),
     username: env("ILOUSER"),
     password: env("ILOPASS")
@@ -35,14 +37,18 @@ var options: PowerClientOptions = {
 
 const port = env("PORT", 5000);
 const app = express()
-const server = http.createServer(app)
+const serverOptions = {
+    key: fs.readFileSync("build/cert/key.pem"),
+    cert: fs.readFileSync("build/cert/cert.pem")
+}
+const server = https.createServer(serverOptions, app)
 
-const api = new PowerAPI(app, options)
+const api = new PowerAPI(app, clientOptions)
 new NotificationServer(server, api)
 
 // app.use(auth(env("USER"), env("PASS")))
 app.use(express.static("public"))
 
 server.listen(port, () => {
-    return Log.info(`Webserver is listening at http://localhost:${port}`);
+    return Log.info(`Webserver is listening at https://localhost:${port}`);
 })
