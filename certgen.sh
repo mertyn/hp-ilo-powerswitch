@@ -1,3 +1,5 @@
+#!/bin/sh
+
 certpath="build/cert"
 mkdir -p $certpath
 
