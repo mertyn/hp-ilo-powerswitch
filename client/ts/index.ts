@@ -93,7 +93,12 @@ Notification.requestPermission().then(function (result) {
 const socket = io()
 socket.on("ready", () => {
     var date = new Date()
-    notification(`Server is ready! - ${date.getHours()}:${date.getMinutes()}`)
+    var hours = (100 + date.getHours()).toString()
+    var minutes = (100 + date.getMinutes()).toString()
 
+    hours = hours.substring(hours.length - 2, hours.length)
+    minutes = minutes.toString().substring(1, 3)
+
+    notification(`Server is ready! - ${hours}:${minutes}`)
     new Notification("Server is ready!", { body: `${hostName.innerText} has finished boot`, icon: "https://commons.wikimedia.org/wiki/File:Check-Logo.png" });
 })
