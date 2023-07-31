@@ -74,8 +74,17 @@ i recommend using this app as a docker container, since i use it that way myself
 ### boot notification
 since my server needs some time to boot and get all services up and running, i added the ability to get notified as soon as the boot has finished. for this the app provides an endpoint at `https://<app-address>:<port>/api/notification`. for sending a notification to all connected clients the server simply needs to make a post request to this address. to improve security a bit, the server needs to send a token, which needs to have the same value as is set in the `SERVERTOKEN` environment variable. i have a simple systemd service set up on linux for this, that runs a script executing this post request using curl.
 
+for running the request, create a script somewhere on your machine. for example here is mine called `ready.sh`:
+```bash
+#!/bin/bash
 
-for running the request, create a script somewhere
+curl --request POST \
+    --header "Content-Type: application/json" \
+    --data '{"token":"%7f#u7dVD35YmPCq!$&w"}' \
+    --insecure \
+    https://<webapp-address>:5000/api/notification
+```
+since the app only uses self signed certificates for https, it is important to set the `--insecure` flag to make the request work.
 
 to create the service, create a file called `ready.service` in `/etc/systemd/system`:
 ```ini
