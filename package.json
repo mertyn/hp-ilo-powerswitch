@@ -1,6 +1,6 @@
 {
   "name": "hp-ilo-powerswitch",
-  "version": "0.1.0",
+  "version": "1.0",
   "description": "simple power control for hp integrated lights out through a web browser",
   "main": "index.js",
   "scripts": {
