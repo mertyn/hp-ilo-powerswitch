@@ -86,8 +86,15 @@ $$(".power--action").forEach((button: any) => {
 })
 
 
-Notification.requestPermission().then(function (result) {
-    console.log("notification permission", result)
+$("#enable--notifications")?.addEventListener("click", e => {
+    e.preventDefault()
+
+    if (Notification.permission === "granted") {
+        console.log("notifications already enabled")
+        return
+    }
+
+    Notification.requestPermission().then(result => console.log("notification permission", result) )
 })
 
 const socket = io()

@@ -160,3 +160,15 @@ button.primary {
 .notification:empty {
     display: none;
 }
+
+
+footer {
+    margin: 1em 0;
+    color: $foregroundSecondary;
+    text-align: center;
+
+    a {
+        color: $foregroundSecondary;
+        text-decoration: none;
+    }
+}
