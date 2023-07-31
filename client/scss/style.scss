@@ -8,6 +8,9 @@ $foreground: #fff;
 $foregroundSecondary: #aaa;
 $on: #1DE9B6;
 $off: #E53935;
+$error: #E53935;
+$notification: #00BFA5;
+
 
 html, body {
     margin: 0;
@@ -137,19 +140,23 @@ button.primary {
 }
 
 
-.error {
+.notification {
     border-radius: 0.2em;
 
-    margin: 0;
+    margin: 1em 0;
     padding: 0.6em;
 
-    background: red;
+    background: $notification;
     color: black;
 
     text-align: left;
     overflow-wrap: break-word;
 }
 
-.error:empty {
+.notification.error {
+    background: $error;
+}
+
+.notification:empty {
     display: none;
 }
