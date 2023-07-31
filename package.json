@@ -4,6 +4,7 @@
   "description": "simple power control for hp integrated lights out through a web browser",
   "main": "index.js",
   "scripts": {
+    "postinstall": "./certgen.sh",
     "build": "tsc --project src/ && webpack --config webpack.config.js",
     "build-server": "tsc --project src/",
     "start": "node build/index.js",
