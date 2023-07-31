@@ -1,3 +1,4 @@
+import { Log } from "./log"
 import express from "express";
 import { PowerClient, PowerClientOptions } from "./power-client";
 import bodyParser from "body-parser";
@@ -22,15 +23,15 @@ export class PowerAPI {
     }
 
     private api(req: express.Request, res: express.Response): void {
-        console.log("api: got request ", req.path)
+        Log.info("api: got request ", req.path)
         res.json({ message: "hello, this is api" })
     }
 
     private state(req: express.Request, res: express.Response): void {
-        // console.log("api: got request ", req.path)
+        Log.debug("api: got request ", req.path)
 
         function callback(data: any) {
-            // console.log("api: got data", data.PowerState)
+            Log.debug("api: got data", data.PowerState)
             res.json({
                 powerState: data.PowerState,
                 model: data.Model,
@@ -39,7 +40,7 @@ export class PowerAPI {
         }
 
         function error(data: any) {
-            // console.log("api: got error", data)
+            Log.debug("api: got error", data)
             res.json({ error: data })
         }
 
@@ -47,14 +48,14 @@ export class PowerAPI {
     }
 
     private action(req: express.Request, res: express.Response): void {
-        console.log("api: got action request", req.body.action)
+        Log.info("api: got action request", req.body.action)
 
         this.client.postResetAction(req.body.action, (data: any) => {
-            console.log("api: responding with powerOn =", data.PowerState === "On")
+            Log.info("api: responding with powerOn =", data.PowerState === "On")
             res.json({ powerOn: data.PowerState === "On" })
         },
         (error: any) => {   
-            // console.log("api: got error", error)
+            Log.error("api: got error", error)
             res.json({ error: error })
         })
     }
@@ -62,7 +63,7 @@ export class PowerAPI {
     private notification(req: express.Request, res: express.Response): void {
         var tokenValid: boolean = process.env.SERVERTOKEN == req.body.token;
         
-        console.log("api: got notification request", req.body.token, "token valid ", tokenValid)
+        Log.info("api: got notification request", req.body.token, "token valid ", tokenValid)
         
         res.status(tokenValid ? 200 : 401)
         res.json({ tokenValid: tokenValid })

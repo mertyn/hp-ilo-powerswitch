@@ -1,3 +1,4 @@
+import { Log } from "./log";
 import https from "https"
 
 
@@ -21,7 +22,7 @@ export class PowerClient {
 
 
     public getPowerState(callback: Function, errorCallback?: Function): void {
-        // console.log("client: requesting powerstate")
+        Log.debug("client: requesting powerstate")
 
         const options = {
             hostname: this.iloIP,
@@ -33,20 +34,20 @@ export class PowerClient {
         }
 
         const req = https.request(options, (res) => {
-            // console.log("client: get statusCode =", res.statusCode)
+            Log.debug("client: get statusCode =", res.statusCode)
 
             res.on("data", (data) => {
                 var obj = JSON.parse(data.toString())
                 
-                // console.log("client: got data")
-                // console.log(data.toString())
-                // console.log(JSON.stringify(obj, null, 2))
-                // console.log("client: powerOn =", obj.PowerState === "On")
+                Log.debug("client: got data")
+                Log.debug(data.toString())
+                Log.debug(JSON.stringify(obj, null, 2))
+                Log.debug("client: powerOn =", obj.PowerState === "On")
 
                 callback ? callback(obj) : null
             })
         }).setTimeout(100000).on("error", (error) => {
-            // console.error("client error: ", error)
+            Log.error("client error: ", error)
             errorCallback ? errorCallback(error) : null
         })
 
@@ -63,7 +64,7 @@ export class PowerClient {
     }
 
     public postResetAction(resetType: string, callback?: Function, errorCallback?: Function): void {
-        console.log("client: posting action")
+        Log.debug("client: posting action")
 
         const options = {
             hostname: this.iloIP,
@@ -82,21 +83,21 @@ export class PowerClient {
         };
     
         const req = https.request(options, (res) => {
-            console.log("client: post statusCode =", res.statusCode)
+            Log.info("client: post statusCode =", res.statusCode)
     
             res.on("data", (data) => {
                 var obj = JSON.parse(data.toString())
 
-                console.log("client: got data")
-                console.log(data.toString())
-                // console.log(JSON.stringify(obj, null, 2))
-                console.log("client: powerOn =", obj.PowerState === "On")
+                Log.info("client: got data")
+                Log.info(data.toString())
+                Log.debug(JSON.stringify(obj, null, 2))
+                Log.info("client: powerOn =", obj.PowerState === "On")
                 
                 callback ? callback(obj) : null
             })
     
         }).setTimeout(100000).on("error", (error) => {
-            console.error("client error:", error)
+            Log.error("client error:", error)
             errorCallback ? errorCallback(error) : null
         })
     

@@ -1,4 +1,5 @@
 import "dotenv/config"
+import { Log } from "./log"
 import http from "http"
 import express from "express"
 import { Server } from "socket.io"
@@ -14,7 +15,7 @@ function env(key: string, defaultValue: any = ""): string {
 
 
 // get and log environment options
-console.log(`
+Log.info(`
 environment configuration:
 PORT=${env("PORT")},
 USER=${env("USER")},
@@ -43,5 +44,5 @@ new NotificationServer(server, api)
 app.use(express.static("public"))
 
 server.listen(port, () => {
-    return console.log(`Webserver is listening at http://localhost:${port}`);
+    return Log.info(`Webserver is listening at http://localhost:${port}`);
 })
