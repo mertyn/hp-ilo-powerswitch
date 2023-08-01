@@ -107,4 +107,5 @@ make sure to replace the value of `ExecStart` with the path to your ready.sh scr
 # development/contributing
 although this application can still be improved and polished, it works well enough for my application and therefore i have ended development. if you have made any improvements feel free to make a pull request however and i will see if i want to adopt the changes in the project :)
 
-## license
+## [license](https://github.com/mertyn/hp-ilo-powerswitch/blob/main/LICENSE)
+this project is licensed under the Creative Commons Attribution-ShareAlike (CC BY-SA) license
